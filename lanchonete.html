@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano Interativo | App para Lanchonete</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lanchonete.css">
+
+    <!-- Chosen Palette: Sabor Neutro -->
+    <!-- Application Structure Plan: A single-page dashboard structure was chosen to provide a holistic yet digestible overview of the project plan. The layout uses thematic sections (Overview, Features, Timeline, Challenges) accessible via a sticky top navigation for easy exploration. This non-linear approach allows users, like project stakeholders or developers, to quickly jump to the information most relevant to them. Key interactions include: 1) Toggling between client/admin features to compare scopes. 2) An interactive timeline chart with clickable phase details to visualize project flow and drill down into specifics. 3) An accordion for challenges/solutions to present dense information cleanly. This structure is superior to a linear report for usability, as it promotes active exploration over passive reading. -->
+    <!-- Visualization & Content Choices: 1. **Project Timeline:** Report Info -> Project phase durations (e.g., 2-4 weeks). Goal -> Compare/Change. Viz -> Interactive Horizontal Bar Chart (Chart.js/Canvas). Interaction -> Hover for exact weeks, click buttons below to update a detailed text area. Justification -> Visually communicates the scale and overlap of project phases far better than text. Click-to-update keeps the UI clean. 2. **Features List:** Report Info -> Long lists of client and admin features. Goal -> Organize. Viz -> Two-column layout with a toggle. Interaction -> Click toggle to switch views. Justification -> Breaks a dense list into two manageable parts, preventing information overload. 3. **Challenges/Solutions:** Report Info -> Paired problem/solution text blocks. Goal -> Organize. Viz -> Accordion (HTML/CSS/JS). Interaction -> Click to expand/collapse. Justification -> Standard, intuitive pattern for FAQ-style content, hiding complexity until requested. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+
+</head>
+<body class="bg-stone-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-gray-800">🍔 Lanchonete Sabor & Praticidade</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#overview" class="nav-link inactive-nav font-medium">Visão Geral</a>
+                    <a href="#features" class="nav-link inactive-nav font-medium">Funcionalidades</a>
+                    <a href="#timeline" class="nav-link inactive-nav font-medium">Cronograma</a>
+                    <a href="#challenges" class="nav-link inactive-nav font-medium">Desafios</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="overview" class="text-center min-h-[60vh] flex flex-col justify-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Plano de Projeto: App da Lanchonete</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+                Uma análise interativa do estudo de caso para a criação de um aplicativo móvel, focando em modernizar operações, otimizar o atendimento e fidelizar clientes através da tecnologia.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto w-full">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-500">Prazo Total (MVP)</h3>
+                    <p class="text-3xl font-bold text-amber-500" id="stat-weeks">22-36</p>
+                    <p class="text-gray-500">Semanas</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-500">Fases do Projeto</h3>
+                    <p class="text-3xl font-bold text-amber-500" id="stat-phases">5</p>
+                     <p class="text-gray-500">Etapas Cruciais</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-500">Principais Desafios</h3>
+                    <p class="text-3xl font-bold text-amber-500" id="stat-challenges">6</p>
+                     <p class="text-gray-500">Áreas de Atenção</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold">Funcionalidades Essenciais</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    O aplicativo será dividido em dois módulos principais: um para o cliente final e um painel administrativo para a gestão da lanchonete. Use o seletor abaixo para explorar as funcionalidades de cada um.
+                </p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center mb-8 bg-stone-200 p-1 rounded-lg w-fit mx-auto">
+                    <button id="btn-client" class="feature-toggle active px-6 py-2 rounded-md font-medium">📱 Módulo Cliente</button>
+                    <button id="btn-admin" class="feature-toggle px-6 py-2 rounded-md font-medium">💻 Módulo Admin</button>
+                </div>
+                <div id="features-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="py-16 bg-white rounded-xl shadow-lg">
+             <div class="text-center mb-12 px-4">
+                <h2 class="text-3xl font-bold">Cronograma do Projeto (MVP)</h2>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">
+                    A visualização abaixo mostra a duração estimada para cada fase do desenvolvimento do Produto Mínimo Viável (MVP). As barras representam o intervalo de tempo (mínimo e máximo). Clique nos botões de cada fase para ver mais detalhes sobre suas atividades e desafios específicos.
+                </p>
+            </div>
+            <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 mt-8 px-4">
+                <button data-phase="0" class="phase-button px-4 py-2 bg-gray-200 rounded-lg font-medium transition-colors">Fase 1: Planejamento</button>
+                <button data-phase="1" class="phase-button px-4 py-2 bg-gray-200 rounded-lg font-medium transition-colors">Fase 2: Design UI/UX</button>
+                <button data-phase="2" class="phase-button px-4 py-2 bg-gray-200 rounded-lg font-medium transition-colors">Fase 3: Desenvolvimento</button>
+                <button data-phase="3" class="phase-button px-4 py-2 bg-gray-200 rounded-lg font-medium transition-colors">Fase 4: Testes e Lançamento</button>
+                <button data-phase="4" class="phase-button px-4 py-2 bg-gray-200 rounded-lg font-medium transition-colors">Fase 5: Manutenção</button>
+            </div>
+            <div id="phase-details" class="mt-8 max-w-4xl mx-auto bg-stone-50 p-6 rounded-lg border border-stone-200 min-h-[200px]">
+                <h3 id="phase-title" class="text-xl font-bold mb-2"></h3>
+                <h4 class="font-semibold mt-4">Atividades Principais:</h4>
+                <p id="phase-activities" class="text-gray-700"></p>
+                <h4 class="font-semibold mt-4">Desafios Específicos:</h4>
+                <p id="phase-challenges" class="text-gray-700"></p>
+            </div>
+        </section>
+
+        <section id="challenges" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold">Desafios Comuns e Soluções</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    O desenvolvimento de um app para o setor alimentício apresenta desafios únicos. Abaixo, detalhamos os principais e as estratégias para superá-los. Clique em cada desafio para expandir e ver a solução proposta.
+                </p>
+            </div>
+            <div id="accordion-container" class="max-w-3xl mx-auto space-y-4">
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-16">
+        <p>&copy; 2025 | Estudo de Caso Interativo: Lanchonete Sabor & Praticidade. | Polo Arapongas</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const featuresData = {
+                client: [
+                    "Cadastro e Login", "Cardápio Interativo", "Personalização de Pedidos",
+                    "Carrinho de Compras", "Formas de Pagamento", "Seleção de Entrega/Retirada",
+                    "Acompanhamento do Pedido", "Histórico de Pedidos", "Avaliações e Comentários",
+                    "Notificações Push"
+                ],
+                admin: [
+                    "Gerenciamento de Cardápio", "Gerenciamento de Pedidos", "Gestão de Clientes",
+                    "Gestão de Entregadores", "Relatórios Básicos", "Configurações de Entrega",
+                    "Gestão de Promoções"
+                ]
+            };
+
+            const timelineData = {
+                labels: ["Planejamento", "Design UI/UX", "Desenvolvimento", "Testes e Lançamento", "Manutenção"],
+                datasets: [{
+                    label: 'Duração Mínima (semanas)',
+                    data: [2, 4, 12, 4, 0],
+                    backgroundColor: 'rgba(245, 158, 11, 0.6)',
+                    borderColor: 'rgba(245, 158, 11, 1)',
+                    borderWidth: 1,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }, {
+                    label: 'Duração Máxima (adicional)',
+                    data: [2, 2, 8, 2, 0],
+                    backgroundColor: 'rgba(217, 119, 6, 0.4)',
+                    borderColor: 'rgba(217, 119, 6, 1)',
+                    borderWidth: 1,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }]
+            };
+
+            const phaseDetailsData = [
+                {
+                    title: "Fase 1: Planejamento e Requisitos",
+                    activities: "Reuniões de kickoff, levantamento detalhado de requisitos, definição do MVP, análise de concorrência, escolha de tecnologias, criação do escopo.",
+                    challenges: "Alinhamento de expectativas, documentação clara, evitar 'feature creep' (adição excessiva de funcionalidades)."
+                },
+                {
+                    title: "Fase 2: Design (UI/UX)",
+                    activities: "Criação de wireframes, protótipos de baixa e alta fidelidade, design visual, testes de usabilidade com usuários-alvo.",
+                    challenges: "Garantir uma navegação fluida, design responsivo para diferentes telas, consistência entre Android e iOS."
+                },
+                {
+                    title: "Fase 3: Desenvolvimento (Front-end e Back-end)",
+                    activities: "Codificação do app (Android/iOS), desenvolvimento do painel admin, criação da API, configuração do banco de dados, integração de gateway de pagamento.",
+                    challenges: "Integração de APIs de terceiros (pagamento, mapas), otimização de performance, segurança dos dados."
+                },
+                {
+                    title: "Fase 4: Testes e Lançamento",
+                    activities: "Testes internos (QA), testes com usuários beta, correção de bugs, otimização, publicação nas lojas de aplicativos (Google Play, Apple App Store).",
+                    challenges: "Garantir estabilidade e segurança, atender aos requisitos das lojas, gerenciar feedback de beta testers."
+                },
+                {
+                    title: "Fase 5: Manutenção e Melhorias (Pós-lançamento)",
+                    activities: "Monitoramento do app, coleta de feedback, correção de bugs, desenvolvimento de novas funcionalidades, atualizações de segurança.",
+                    challenges: "Lidar com escalabilidade, gerenciar atualizações de sistema operacional, priorizar melhorias."
+                }
+            ];
+            
+            const challengesData = [
+                {
+                    title: "Integração com Sistemas Existentes (PDV/ERP)",
+                    challenge: "A lanchonete já pode ter um sistema de Ponto de Venda (PDV) ou gestão (ERP). Integrar o app a esses sistemas pode ser complexo e caro.",
+                    solution: "Começar com uma solução autônoma para o app e, em fases futuras, planejar integrações. Usar APIs bem documentadas e, se necessário, desenvolver conectores personalizados."
+                },
+                {
+                    title: "Gestão do Cardápio",
+                    challenge: "O cardápio de uma lanchonete muda frequentemente. Manter o app atualizado manualmente pode ser trabalhoso.",
+                    solution: "Desenvolver um painel administrativo intuitivo para a lanchonete atualizar o cardápio facilmente. Implementar funcionalidades de 'item indisponível' rapidamente."
+                },
+                {
+                    title: "Logística de Entrega (Delivery)",
+                    challenge: "Se a lanchonete tiver delivery próprio, gerenciar rotas, entregadores e tempos de entrega pode ser complexo.",
+                    solution: "Integrar com serviços de mapas, sistema de rastreamento simples, e um módulo de gestão de entregadores. Considerar parcerias com apps de delivery existentes inicialmente."
+                },
+                {
+                    title: "Pagamento Online e Segurança",
+                    challenge: "A segurança das transações e a escolha de um gateway de pagamento confiável são cruciais.",
+                    solution: "Utilizar gateways de pagamento renomados (ex: Stripe, PagSeguro) que já possuem certificações de segurança. Não armazenar dados sensíveis de cartão no servidor."
+                },
+                {
+                    title: "Experiência do Usuário (UX) e Retenção",
+                    challenge: "Concorrer com outros apps de food service exige um design atraente e uma experiência de usuário impecável.",
+                    solution: "Investir pesado na fase de UI/UX, realizar testes de usabilidade, coletar feedback constante e oferecer promoções exclusivas pelo app."
+                },
+                 {
+                    title: "Conectividade e Desempenho",
+                    challenge: "O app precisa funcionar bem mesmo em redes com baixa conectividade e em diferentes dispositivos.",
+                    solution: "Otimizar o código, usar caches inteligentes, comprimir imagens e dados, e realizar testes rigorosos de performance e carga."
+                }
+            ];
+
+            const featuresListContainer = document.getElementById('features-list');
+            const btnClient = document.getElementById('btn-client');
+            const btnAdmin = document.getElementById('btn-admin');
+            const featureToggles = document.querySelectorAll('.feature-toggle');
+
+            function renderFeatures(type) {
+                featuresListContainer.innerHTML = '';
+                featuresData[type].forEach(feature => {
+                    const featureEl = document.createElement('div');
+                    featureEl.className = 'bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-center';
+                    featureEl.innerHTML = `<span class="text-amber-500 mr-3">✓</span> ${feature}`;
+                    featuresListContainer.appendChild(featureEl);
+                });
+            }
+
+            featureToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    featureToggles.forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    if (e.target.id === 'btn-client') {
+                        renderFeatures('client');
+                    } else {
+                        renderFeatures('admin');
+                    }
+                });
+            });
+
+            renderFeatures('client');
+            btnClient.style.backgroundColor = '#F59E0B';
+            btnClient.style.color = 'white';
+            btnAdmin.style.backgroundColor = 'transparent';
+            btnAdmin.style.color = '#374151';
+
+            document.querySelectorAll('.feature-toggle').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.feature-toggle').forEach(btn => {
+                        btn.style.backgroundColor = 'transparent';
+                        btn.style.color = '#374151';
+                    });
+                    this.style.backgroundColor = '#F59E0B';
+                    this.style.color = 'white';
+                });
+            });
+
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: timelineData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: { display: true, text: 'Duração em Semanas' }
+                        },
+                        y: { stacked: true }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' semanas';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+            
+            const phaseTitle = document.getElementById('phase-title');
+            const phaseActivities = document.getElementById('phase-activities');
+            const phaseChallenges = document.getElementById('phase-challenges');
+            const phaseButtons = document.querySelectorAll('.phase-button');
+
+            function updatePhaseDetails(phaseIndex) {
+                const data = phaseDetailsData[phaseIndex];
+                phaseTitle.textContent = data.title;
+                phaseActivities.textContent = data.activities;
+                phaseChallenges.textContent = data.challenges;
+
+                phaseButtons.forEach(btn => btn.classList.remove('active'));
+                const activeButton = document.querySelector(`.phase-button[data-phase='${phaseIndex}']`);
+                if(activeButton) activeButton.classList.add('active');
+            }
+
+            phaseButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    updatePhaseDetails(e.target.dataset.phase);
+                });
+            });
+            updatePhaseDetails(0);
+
+            const accordionContainer = document.getElementById('accordion-container');
+            challengesData.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'bg-white rounded-lg shadow-sm border border-gray-200';
+                accordionItem.innerHTML = `
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold">
+                        <span>${item.title}</span>
+                        <span class="transform transition-transform duration-300 text-amber-500 text-2xl">+</span>
+                    </button>
+                    <div class="accordion-content px-4">
+                        <div class="pb-4">
+                            <h4 class="font-semibold text-gray-500">O Desafio:</h4>
+                            <p class="text-gray-700 mt-1">${item.challenge}</p>
+                            <h4 class="font-semibold text-gray-500 mt-3">A Solução:</h4>
+                            <p class="text-gray-700 mt-1">${item.solution}</p>
+                        </div>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+            
+            document.querySelectorAll('.accordion-header').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('span:last-child');
+                    
+                    const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = '0px');
+                    document.querySelectorAll('.accordion-header span:last-child').forEach(i => {
+                        i.textContent = '+';
+                        i.classList.remove('rotate-45');
+                    });
+                    
+                    if (!isExpanded) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.textContent = '−';
+                    }
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    link.classList.add('inactive-nav');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active-nav');
+                        link.classList.remove('inactive-nav');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

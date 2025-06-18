@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Livros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        .book-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .book {
+            width: 150px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .book img {
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        .book img:hover {
+            transform: scale(1.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 800px;
+        }
+        .modal img {
+            width: 80%;
+        }
+        .buy-btn {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .close-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bem-vindo à Loja de Livros</h1>
+    <div class="book-container">
+        <div class="book" onclick="openModal('livro1.jpg', 'Livro 1')">
+            <img src="images.jpeg" alt="Livro 1">
+            <p>Livro 1</p>
+        </div>
+        <div class="book" onclick="openModal('livro2.jpg', 'Livro 2')">
+            <img src="logo.png" alt="Livro 2">
+            <p>Livro 2</p>
+        </div>
+        <div class="book" onclick="openModal('livro3.jpg', 'Livro 3')">
+            <img src="livro3.jpg" alt="Livro 3">
+            <p>Livro 3</p>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img id="modal-img" src="" alt="">
+            <h2 id="modal-title"></h2>
+            <button class="buy-btn" onclick="buyBook()">Comprar</button>
+            <button class="close-btn" onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(image, title) {
+            document.getElementById("modal-img").src = image;
+            document.getElementById("modal-title").innerText = title;
+            document.getElementById("modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function buyBook() {
+            alert("Livro comprado com sucesso!");
+        }
+    </script>
+
+</body>
+</html>

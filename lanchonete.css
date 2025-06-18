@@ -1,0 +1,39 @@
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    scroll-behavior: smooth; 
+}
+
+.active-nav { 
+    color: #F59E0B; 
+    border-bottom: 2px solid #F59E0B; 
+}
+
+.inactive-nav { 
+    color: #4B5563; 
+}
+
+.chart-container { 
+    position: relative; 
+    width: 100%; 
+    max-width: 900px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    height: 350px; 
+    max-height: 50vh; 
+}
+
+@media (min-width: 768px) { 
+    .chart-container { height: 450px; } 
+}
+
+.accordion-content { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.3s ease-out; 
+}
+
+.phase-button.active { 
+    background-color: #F59E0B; 
+    color: white; 
+}
